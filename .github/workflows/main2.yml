@@ -1,5 +1,5 @@
-name: coverage
-on: pull_request
+name: build
+on: push
 
 jobs:
   test:
@@ -22,8 +22,13 @@ jobs:
       - name: Move to flask folder
         run: |
           cd app
-      - name: Build coverage file
+      - name: Check coverage
+        run: | 
+          pipenv run pytest --cov=app
+      - name: Run test suite
         run: |
-          pytest --cache-clear --cov=app test/ > pytest-coverage.txt
-      - name: Comment coverage
-        uses: coroo/pytest-coverage-commentator@v1.0.2
+          pipenv run pytest
+      - name: format
+        uses: rickstaa/action-black@v1.1.14
+
+
